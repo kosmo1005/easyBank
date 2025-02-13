@@ -1,6 +1,5 @@
 package com.cool_company.easy_bank.service;
 
-
 import com.cool_company.easy_bank.dto.transaction.TransactionReqDto;
 import com.cool_company.easy_bank.repository.TransactionRepository;
 import com.cool_company.easy_bank.transformers.TransactionTransformer;
@@ -22,14 +21,14 @@ public class TransactionService {
 
         switch (dto.operationType()) {
             case DEPOSIT -> {
-                repo.save(t.dtoToEntity(dto));
+                repo.save(t.dtoToEntity(wallet,dto));
 
                 wallet.setTotalAmount(wallet.getTotalAmount().add(dto.amount()));
                 walletService.updateWalletAmount(wallet);
             }
             case WITHDRAW -> {
                 if (dto.amount().compareTo(wallet.getTotalAmount()) < 0) {
-                    repo.save(t.dtoToEntity(dto));
+                    repo.save(t.dtoToEntity(wallet,dto));
 
                     wallet.setTotalAmount(wallet.getTotalAmount().subtract(dto.amount()));
                     walletService.updateWalletAmount(wallet);
